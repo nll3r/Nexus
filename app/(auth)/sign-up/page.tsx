@@ -1,7 +1,7 @@
 import React from "react";
 
-const ComponentName = () => {
-  return <div>ComponentName</div>;
+const SignUp = () => {
+  return <div>Page</div>;
 };
 
-export default ComponentName;
+export default SignUp;
