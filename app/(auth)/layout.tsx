@@ -19,15 +19,26 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <p className="body-1">Apenas um sítio para todos os documentos.</p>
           </div>
           <Image
-            src="/ilustracao.png"
+            src="/assets/images/files.png"
             alt="Ficheiros"
-            width={196}
-            height={196}
-            className="Transition-all hover:rotate-2 hover:scale-105"
+            width={342}
+            height={342}
+            className="transition-all hover:rotate-2 hover:scale-105"
           />
         </div>
       </section>
-      {children}
+      <section className="flex flex-1 flex-col items-center bg-white p-4 py-10 lg:justify-center lg:p-10 lg:py-0">
+        <div>
+          <Image
+            src="/assets/icons/logo-full.png"
+            alt="logo"
+            width={224}
+            height={82}
+            className="h-auto w-[200px] lg:w-[250px]"
+          />
+        </div>
+        {children}
+      </section>
     </div>
   );
 };
