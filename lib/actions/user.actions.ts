@@ -40,6 +40,7 @@ export const createAccount = async ({
 
   const accountId = await sendEmailOTP({ email });
   if (!accountId) throw new Error("Falha ao enviar OTP");
+
   if (!existingUser) {
     const { databases } = await createAdminClient();
     await databases.createDocument(
