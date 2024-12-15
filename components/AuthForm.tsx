@@ -25,7 +25,7 @@ type FormType = "sign-in" | "sign-up";
 const authFormSchema = (formType: FormType) => {
   return z.object({
     email: z.string().email(),
-    FullName:
+    fullName:
       formType === "sign-up"
         ? z.string().min(2).max(50)
         : z.string().optional(),
@@ -42,7 +42,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      FullName: "",
+      fullName: "",
       email: "",
     },
   });
@@ -52,11 +52,15 @@ const AuthForm = ({ type }: { type: FormType }) => {
     setErrorMessage("");
 
     try {
-      const user = await createAccount({
-        FullName: values.FullName || "",
+      const user = type === "sign-up"
+      ? await createAccount({
+        fullName: values.fullName || "",
         email: values.email,
-      });
+      })
+      : await signInUser({ email: values.email });
+
       setAccountId(user.accountId);
+
     } catch {
       setErrorMessage("Falha ao criar uma conta. Por favor, tente denovo.");
     } finally {
@@ -74,7 +78,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
           {type === "sign-up" && (
             <FormField
               control={form.control}
-              name="FullName"
+              name="fullName"
               render={({ field }) => (
                 <FormItem>
                   <div className="shad-form-item">
@@ -105,7 +109,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
                   <FormControl>
                     <Input
-                      placeholder="Escreva o seu email"
+                      placeholder="Introduza o seu email"
                       className="shad-input"
                       {...field}
                     />
@@ -150,7 +154,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
         </form>
       </Form>
 
-      {true && (
+      {accountId && (
         <OtpModal email={form.getValues("email")} accountId={accountId} />
       )}
     </>
