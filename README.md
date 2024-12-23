@@ -62,6 +62,4 @@ Este projeto é open-source e está licenciado sob a Licença MIT.
 Para mais detalhes, consulte o ficheiro [LICENSE](./LICENSE).
 
 ---
-
-Junte-se a nós para transformar a experiência de armazenamento pessoal em nuvem com o Nexus.  
-O seu feedback e apoio são fundamentais para o nosso sucesso!
+ Para iniciar a aplicação uso **npm run dev** no terminal
