@@ -32,10 +32,10 @@ export const sendEmailOTP = async ({ email }: { email: string }) => {
   }
 };
 export const createAccount = async ({
-  fullName,
+  FullName,
   email,
 }: {
-  fullName: string;
+  FullName: string;
   email: string;
 }) => {
   const existingUser = await getUserByEmail(email);
@@ -53,7 +53,7 @@ export const createAccount = async ({
       appwriteConfig.usersCollectionId,
       ID.unique(),
       {
-        fullName,
+        FullName,
         email,
         avatar:
           "https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3AProfile_avatar_placeholder_large.png&psig=AOvVaw2mZ6aj1DLZlB3_h30nJtVb&ust=1732225409808000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCLCh1dTw64kDFQAAAAAdAAAAABAK",
