@@ -1,10 +1,12 @@
 "use server";
 
 import { Query, ID } from "node-appwrite";
-import { createAdminClient } from "@/lib/appwrite";
+import {createAdminClient, createSessionClient} from "@/lib/appwrite";
 import { appwriteConfig } from "@/lib/appwrite/config";
 import { parseStringify } from "@/lib/utils";
 import { cookies } from "next/headers";
+import {avatarPlaceholderUrl} from "../../../constants";
+import {redirect} from "next/navigation";
 
 const getUserByEmail = async (email: string) => {
   const { databases } = await createAdminClient();
@@ -32,10 +34,10 @@ export const sendEmailOTP = async ({ email }: { email: string }) => {
   }
 };
 export const createAccount = async ({
-  FullName,
+  fullName,
   email,
 }: {
-  FullName: string;
+  fullName: string;
   email: string;
 }) => {
   const existingUser = await getUserByEmail(email);
@@ -53,10 +55,10 @@ export const createAccount = async ({
       appwriteConfig.usersCollectionId,
       ID.unique(),
       {
-        FullName,
+        fullName,
         email,
         avatar:
-          "https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3AProfile_avatar_placeholder_large.png&psig=AOvVaw2mZ6aj1DLZlB3_h30nJtVb&ust=1732225409808000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCLCh1dTw64kDFQAAAAAdAAAAABAK",
+          avatarPlaceholderUrl,
         accountId, // Só será incluído se for válido
       },
     );
@@ -81,6 +83,54 @@ export const verifySecret = async ({accountId, password}: {accountId: string; pa
   } catch (error) {
     handleError(error, "Falha ao enviar OTP do email");
   }
+};
 
 
+export const getCurrentUser = async () => {
+  try {
+    const { databases, account } = await createSessionClient();
+
+    const result = await account.get();
+
+    const user = await databases.listDocuments(
+        appwriteConfig.databaseId,
+        appwriteConfig.usersCollectionId,
+        [Query.equal("accountId", result.$id)],
+    );
+
+    if (user.total <= 0) return null;
+
+    return parseStringify(user.documents[0]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const signOutUser = async () => {
+  const { account } = await createSessionClient();
+  try {
+    // Delete the current session
+    await account.deleteSession('current');
+    (await cookies()).delete("appwrite-session");
+  }catch(error) {
+    handleError(error, "Falha no Logout");
+  }finally {
+    redirect('/sign-in')
+  }
+};
+
+export const signInUser = async ({ email}: { email: string }) => {
+  try {
+    const existingUser = await getUserByEmail(email);
+
+    // User exists, send OTP
+    if(existingUser) {
+      await sendEmailOTP({ email });
+      return parseStringify({ accountId: existingUser.accountId });
+    }
+
+    return parseStringify({ accountId: null, error: 'User não encontrado' });
+  }catch (error) {
+    handleError(error, "Falha no Login");
+  }
 }
