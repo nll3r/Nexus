@@ -38,13 +38,15 @@ const MobileNavigation = ({ownerId, accountId, fullName, avatar, email}: Props) 
                className="h-auto"
         />
         <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger>Open</SheetTrigger>
-            <Image
-                src="/assets/icons/menu.svg"
-                width={30}
-                height={30}
-                alt="search"
-            />
+            <SheetTrigger>
+                <Image
+                    src="/assets/icons/menu.svg"
+                    width={30}
+                    height={30}
+                    alt="search"
+                />
+            </SheetTrigger>
+
             <SheetContent className="shad-sheet h-screen px-3">
                 <SheetHeader>
                     <SheetTitle>
