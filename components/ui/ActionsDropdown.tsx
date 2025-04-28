@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import Image from "next/image";
 import {Models} from "node-appwrite";
-import {actionsDropdownItems} from "../../../constants";
 import Link from "next/link";
 import {constructDownloadUrl} from "@/lib/utils";
 import {Input} from "@/components/ui/input";
@@ -27,6 +26,8 @@ import {Button} from "@/components/ui/button";
 import {deleteFile, renameFile, updateFileUsers} from "@/lib/actions/file.actions";
 import {usePathname} from "next/navigation";
 import {FileDetails, ShareInput} from "@/components/ActionsModalContent";
+import {actionsDropdownItems} from "@/constants";
+
 
 
 const ActionsDropdown = ({file}: {file: Models.Document}) => {

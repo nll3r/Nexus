@@ -8,7 +8,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import {usePathname, useRouter} from "next/navigation";
-import {sortTypes} from "../../constants";
+import {sortTypes} from "@/constants";
 
 
 const Sort = () => {

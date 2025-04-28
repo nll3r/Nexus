@@ -11,7 +11,7 @@ import Image from "next/image";
 import React, {useState} from 'react'
 import {usePathname} from "next/navigation";
 import {Separator} from "@/components/ui/separator";
-import {navItems} from "../../constants";
+import {navItems} from "@/constants";
 import Link from "next/link";
 import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
